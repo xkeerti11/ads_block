@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AdShield Pro - Settings</title>
+  <style>
+    /* ── Reset & Base ──────────────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #F3F4F6;
+      color: #1F2937;
+      line-height: 1.5;
+    }
+
+    /* ── Layout ────────────────────────────────────────────────────── */
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ───────────────────────────────────────────────────── */
+    .sidebar {
+      width: 240px;
+      background: #1E3A8A;
+      color: #FFF;
+      padding: 20px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+    }
+    .sidebar-header {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sidebar-header img { width: 32px; height: 32px; border-radius: 8px; }
+    .sidebar-header h1 { font-size: 18px; font-weight: 700; }
+    .sidebar-nav { padding: 12px 0; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+      color: rgba(255,255,255, 0.7);
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.15s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.1); color: #FFF; }
+    .nav-item.active { background: rgba(255,255,255,0.15); color: #FFF; }
+    .nav-item .icon { font-size: 18px; width: 24px; text-align: center; }
+
+    /* ── Main Content ──────────────────────────────────────────────── */
+    .main {
+      margin-left: 240px;
+      flex: 1;
+      padding: 24px 32px;
+      max-width: 900px;
+    }
+
+    /* ── Page Section ──────────────────────────────────────────────── */
+    .page { display: none; }
+    .page.active { display: block; }
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .page-desc {
+      font-size: 14px;
+      color: #6B7280;
+      margin-bottom: 20px;
+    }
+
+    /* ── Card ──────────────────────────────────────────────────────── */
+    .card {
+      background: #FFF;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #374151;
+    }
+
+    /* ── Setting Row ──────────────────────────────────────────────── */
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .setting-row:last-child { border-bottom: none; }
+    .setting-info { flex: 1; }
+    .setting-label { font-size: 14px; font-weight: 500; }
+    .setting-desc { font-size: 12px; color: #9CA3AF; margin-top: 2px; }
+
+    /* ── Toggle ────────────────────────────────────────────────────── */
+    .toggle {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #D1D5DB;
+      border-radius: 24px;
+      transition: 0.2s;
+    }
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 2px;
+      bottom: 2px;
+      background: #FFF;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+    .toggle input:checked + .toggle-slider { background: #1D4ED8; }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+    /* ── Filter List Item ──────────────────────────────────────────── */
+    .filter-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .filter-item:last-child { border-bottom: none; }
+    .filter-info h4 { font-size: 14px; font-weight: 500; }
+    .filter-info p { font-size: 12px; color: #9CA3AF; }
+    .filter-meta { font-size: 11px; color: #9CA3AF; text-align: right; }
+
+    /* ── Whitelist ─────────────────────────────────────────────────── */
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .input-row input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #D1D5DB;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+    }
+    .input-row input:focus { border-color: #1D4ED8; box-shadow: 0 0 0 2px rgba(29,78,216,0.1); }
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: 0.15s;
+    }
+    .btn-primary { background: #1D4ED8; color: #FFF; }
+    .btn-primary:hover { background: #1E40AF; }
+    .btn-danger { background: #FEE2E2; color: #DC2626; }
+    .btn-danger:hover { background: #FECACA; }
+    .btn-outline { background: #FFF; color: #374151; border: 1px solid #D1D5DB; }
+    .btn-outline:hover { background: #F9FAFB; }
+
+    .whitelist-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #F9FAFB;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .whitelist-item .domain { font-weight: 500; }
+    .whitelist-item .remove-btn {
+      border: none;
+      background: none;
+      color: #EF4444;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 0 4px;
+    }
+
+    /* ── Custom Rules ──────────────────────────────────────────────── */
+    .rules-editor {
+      width: 100%;
+      min-height: 200px;
+      padding: 12px;
+      border: 1px solid #D1D5DB;
+      border-radius: 6px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+    }
+    .rules-editor:focus { border-color: #1D4ED8; }
+    .rules-help {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #6B7280;
+      line-height: 1.6;
+    }
+    .rules-help code {
+      background: #F3F4F6;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+
+    /* ── Stats ─────────────────────────────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: #FFF;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .stat-card .number { font-size: 28px; font-weight: 700; color: #1D4ED8; }
+    .stat-card .label { font-size: 12px; color: #6B7280; margin-top: 4px; }
+
+    .site-stats-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .site-stats-table th {
+      text-align: left;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #6B7280;
+      border-bottom: 2px solid #E5E7EB;
+    }
+    .site-stats-table td {
+      padding: 8px 12px;
+      font-size: 13px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    /* ── About ─────────────────────────────────────────────────────── */
+    .about-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .about-logo img { width: 64px; height: 64px; }
+    .about-logo h2 { margin-top: 8px; font-size: 20px; }
+    .about-logo p { color: #6B7280; font-size: 13px; }
+    .about-links { list-style: none; }
+    .about-links li {
+      padding: 8px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .about-links a {
+      color: #1D4ED8;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .about-links a:hover { text-decoration: underline; }
+
+    /* ── Onboarding Overlay ────────────────────────────────────────── */
+    .onboarding-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .onboarding-overlay.hidden { display: none; }
+    .onboarding-card {
+      background: #FFF;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+    }
+    .onboarding-card h2 { font-size: 22px; margin-bottom: 8px; }
+    .onboarding-card p { color: #6B7280; font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
+    .onboarding-card .step-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #D1D5DB;
+    }
+    .step-dot.active { background: #1D4ED8; }
+    .onboarding-card .btn { min-width: 140px; padding: 10px 24px; font-size: 15px; }
+
+    /* ── Toast ──────────────────────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1F2937;
+      color: #FFF;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── Dark Mode ─────────────────────────────────────────────────── */
+    @media (prefers-color-scheme: dark) {
+      body { background: #0F172A; color: #E5E7EB; }
+      .sidebar { background: #0F172A; border-right: 1px solid #1E293B; }
+      .card { background: #1E293B; box-shadow: none; }
+      .card-title { color: #E5E7EB; }
+      .setting-label { color: #E5E7EB; }
+      .setting-row { border-color: #374151; }
+      .filter-item { border-color: #374151; }
+      .whitelist-item { background: #0F172A; }
+      .input-row input { background: #0F172A; border-color: #374151; color: #E5E7EB; }
+      .rules-editor { background: #0F172A; border-color: #374151; color: #E5E7EB; }
+      .stat-card { background: #1E293B; box-shadow: none; }
+      .site-stats-table th { border-color: #374151; }
+      .site-stats-table td { border-color: #1E293B; color: #D1D5DB; }
+      .btn-outline { background: #1E293B; color: #E5E7EB; border-color: #374151; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="../../icons/icon48.png" alt="AdShield Pro">
+        <h1>AdShield Pro</h1>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-page="general">
+          <span class="icon">⚙️</span> General
+        </button>
+        <button class="nav-item" data-page="filters">
+          <span class="icon">📋</span> Filter Lists
+        </button>
+        <button class="nav-item" data-page="whitelist">
+          <span class="icon">✅</span> Whitelist
+        </button>
+        <button class="nav-item" data-page="rules">
+          <span class="icon">📝</span> Custom Rules
+        </button>
+        <button class="nav-item" data-page="stats">
+          <span class="icon">📊</span> Statistics
+        </button>
+        <button class="nav-item" data-page="account">
+          <span class="icon">👤</span> Account
+        </button>
+        <button class="nav-item" data-page="about">
+          <span class="icon">ℹ️</span> About
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+      <!-- General Page -->
+      <div class="page active" id="page-general">
+        <h2 class="page-title">General Settings</h2>
+        <p class="page-desc">Configure core AdShield Pro behavior.</p>
+
+        <div class="card">
+          <h3 class="card-title">Blocking</h3>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Ad Blocking</div>
+              <div class="setting-desc">Block display ads, video ads, and sponsored content</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="opt-globalEnabled" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Tracker Blocking</div>
+              <div class="setting-desc">Block analytics and tracking scripts</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="opt-trackerBlocking" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Cookie Notice Blocker</div>
+              <div class="setting-desc">Hide cookie consent banners and GDPR overlays</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="opt-cookieBlocking" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Malware Protection</div>
+              <div class="setting-desc">Block known malware and phishing domains</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="opt-malwareProtection" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Display</h3>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Badge Counter</div>
+              <div class="setting-desc">Show blocked count on extension icon</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="opt-badgeEnabled" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Acceptable Ads</div>
+              <div class="setting-desc">Allow non-intrusive ads to support websites</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="opt-acceptableAds">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Lists Page -->
+      <div class="page" id="page-filters">
+        <h2 class="page-title">Filter Lists</h2>
+        <p class="page-desc">Manage ad-blocking filter lists. Lists auto-update every 24 hours.</p>
+
+        <div class="card">
+          <h3 class="card-title">Active Filter Lists</h3>
+          <div class="filter-item">
+            <div class="filter-info">
+              <h4>EasyList</h4>
+              <p>Main ad blocking filter list (Global)</p>
+            </div>
+            <div class="filter-meta">
+              <label class="toggle">
+                <input type="checkbox" data-ruleset="easylist" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          <div class="filter-item">
+            <div class="filter-info">
+              <h4>EasyPrivacy</h4>
+              <p>Tracker and analytics blocking</p>
+            </div>
+            <div class="filter-meta">
+              <label class="toggle">
+                <input type="checkbox" data-ruleset="easyprivacy" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          <div class="filter-item">
+            <div class="filter-info">
+              <h4>EasyList India</h4>
+              <p>Indian website ad blocking</p>
+            </div>
+            <div class="filter-meta">
+              <label class="toggle">
+                <input type="checkbox" data-ruleset="easylist_india" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          <div class="filter-item">
+            <div class="filter-info">
+              <h4>Malware Domains</h4>
+              <p>Known malware and phishing domain blocking</p>
+            </div>
+            <div class="filter-meta">
+              <label class="toggle">
+                <input type="checkbox" data-ruleset="malware_domains" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <h3 class="card-title" style="margin-bottom: 0;">Update Filters</h3>
+              <p class="setting-desc">Last updated: <span id="lastUpdateTime">Never</span></p>
+            </div>
+            <button class="btn btn-primary" id="updateFiltersBtn">Update Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Whitelist Page -->
+      <div class="page" id="page-whitelist">
+        <h2 class="page-title">Whitelist</h2>
+        <p class="page-desc">Sites where AdShield is disabled. Support your favorite websites by whitelisting them.</p>
+
+        <div class="card">
+          <h3 class="card-title">Add Website</h3>
+          <div class="input-row">
+            <input type="text" id="whitelistInput" placeholder="example.com">
+            <button class="btn btn-primary" id="addWhitelistBtn">Add</button>
+          </div>
+          <div id="whitelistContainer">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Import / Export</h3>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-outline" id="exportWhitelistBtn">Export List</button>
+            <button class="btn btn-outline" id="importWhitelistBtn">Import List</button>
+            <input type="file" id="importFileInput" accept=".txt,.json" style="display:none;">
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Rules Page -->
+      <div class="page" id="page-rules">
+        <h2 class="page-title">Custom Rules</h2>
+        <p class="page-desc">Add your own blocking and element hiding rules using ABP filter syntax.</p>
+
+        <div class="card">
+          <h3 class="card-title">Filter Rules</h3>
+          <textarea class="rules-editor" id="rulesEditor" placeholder="Enter custom filter rules...&#10;&#10;Examples:&#10;||ads.example.com^&#10;example.com##.ad-banner&#10;@@||example.com^$document"></textarea>
+          <div style="margin-top: 12px; display: flex; gap: 8px;">
+            <button class="btn btn-primary" id="saveRulesBtn">Save Rules</button>
+            <button class="btn btn-outline" id="clearRulesBtn">Clear All</button>
+          </div>
+          <div class="rules-help">
+            <strong>Syntax Help:</strong><br>
+            <code>||domain.com^</code> — Block all requests to domain<br>
+            <code>example.com##.ad-class</code> — Hide element on specific site<br>
+            <code>##.ad-class</code> — Hide element on all sites<br>
+            <code>@@||example.com^</code> — Exception (whitelist) rule
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Page -->
+      <div class="page" id="page-stats">
+        <h2 class="page-title">Statistics</h2>
+        <p class="page-desc">Your ad and tracker blocking statistics.</p>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="number" id="stat-totalAds">0</div>
+            <div class="label">Total Ads Blocked</div>
+          </div>
+          <div class="stat-card">
+            <div class="number" id="stat-totalTrackers">0</div>
+            <div class="label">Total Trackers Blocked</div>
+          </div>
+          <div class="stat-card">
+            <div class="number" id="stat-todayTotal">0</div>
+            <div class="label">Blocked Today</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <h3 class="card-title" style="margin-bottom: 0;">Per-Site Breakdown</h3>
+            <button class="btn btn-danger" id="resetStatsBtn">Reset Stats</button>
+          </div>
+          <table class="site-stats-table">
+            <thead>
+              <tr>
+                <th>Website</th>
+                <th>Ads</th>
+                <th>Trackers</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="siteStatsBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Account Page -->
+      <div class="page" id="page-account">
+        <h2 class="page-title">Account & Premium</h2>
+        <p class="page-desc">Upgrade to Premium for advanced features.</p>
+
+        <div class="card" style="text-align: center; padding: 40px 20px;">
+          <h3 style="font-size: 24px; margin-bottom: 8px;">⭐ AdShield Pro Premium</h3>
+          <p style="color: #6B7280; margin-bottom: 20px;">Unlock advanced ad blocking, anti-fingerprinting, cloud sync, and more.</p>
+          <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 20px;">
+            <div style="border: 2px solid #E5E7EB; border-radius: 8px; padding: 16px 24px;">
+              <div style="font-size: 24px; font-weight: 700; color: #1D4ED8;">&#8377;149</div>
+              <div style="font-size: 12px; color: #6B7280;">/month</div>
+            </div>
+            <div style="border: 2px solid #1D4ED8; border-radius: 8px; padding: 16px 24px; background: #EFF6FF;">
+              <div style="font-size: 24px; font-weight: 700; color: #1D4ED8;">&#8377;999</div>
+              <div style="font-size: 12px; color: #6B7280;">/year (Save &#8377;789)</div>
+            </div>
+          </div>
+          <p style="font-size: 13px; color: #9CA3AF;">Premium features coming soon in v2.0!</p>
+        </div>
+      </div>
+
+      <!-- About Page -->
+      <div class="page" id="page-about">
+        <h2 class="page-title">About</h2>
+        <p class="page-desc">AdShield Pro extension information.</p>
+
+        <div class="card">
+          <div class="about-logo">
+            <img src="../../icons/icon128.png" alt="AdShield Pro">
+            <h2>AdShield Pro</h2>
+            <p>Version 1.0.0</p>
+          </div>
+          <p style="text-align: center; color: #6B7280; font-size: 13px; margin-bottom: 16px;">
+            Block ads, trackers, and malware. Browse faster & safer.<br>
+            Privacy-first. No data collection.
+          </p>
+          <ul class="about-links">
+            <li><a href="#">Report a Bug</a></li>
+            <li><a href="#">Changelog</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Rate on Chrome Web Store</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Onboarding Overlay -->
+  <div class="onboarding-overlay hidden" id="onboarding">
+    <div class="onboarding-card">
+      <div class="step-indicator">
+        <div class="step-dot active" id="step-1"></div>
+        <div class="step-dot" id="step-2"></div>
+        <div class="step-dot" id="step-3"></div>
+        <div class="step-dot" id="step-4"></div>
+      </div>
+      <h2 id="onboarding-title">Welcome to AdShield Pro!</h2>
+      <p id="onboarding-text">Your ad blocker is ready! We're blocking ads, trackers, and malware to give you a cleaner, faster browsing experience.</p>
+      <button class="btn btn-primary" id="onboarding-next">Next</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="../utils/constants.js"></script>
+  <script src="../utils/storage.js"></script>
+  <script src="../utils/messaging.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

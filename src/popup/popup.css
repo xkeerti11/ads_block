@@ -1,0 +1,348 @@
+/* AdShield Pro - Popup Styles */
+/* Design: 340px wide, clean, modern */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 340px;
+  min-height: 400px;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  color: #1F2937;
+  background: #FFFFFF;
+  overflow-x: hidden;
+}
+
+/* ── Header ────────────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #1D4ED8, #2563EB);
+  color: #FFFFFF;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px;
+}
+
+.app-name {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22C55E;
+  display: inline-block;
+}
+
+.status-dot.disabled {
+  background: #EF4444;
+}
+
+.status-text {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+/* ── Stats Row ─────────────────────────────────────────────────────── */
+.stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 16px 12px;
+  background: #F0F5FF;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+
+.stat-number {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1D4ED8;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #6B7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 30px;
+  background: #D1D5DB;
+}
+
+/* ── Controls ──────────────────────────────────────────────────────── */
+.controls {
+  padding: 8px 0;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  transition: background 0.15s;
+}
+
+.control-row:hover {
+  background: #F9FAFB;
+}
+
+.control-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+.control-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.control-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.control-domain {
+  font-size: 11px;
+  color: #9CA3AF;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Toggle Switch ─────────────────────────────────────────────────── */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #D1D5DB;
+  border-radius: 22px;
+  transition: background 0.2s;
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.toggle input:checked + .toggle-slider {
+  background: #1D4ED8;
+}
+
+.toggle input:checked + .toggle-slider::before {
+  transform: translateX(18px);
+}
+
+/* ── Global Toggle Button ──────────────────────────────────────────── */
+.global-toggle-section {
+  padding: 8px 16px;
+  border-top: 1px solid #E5E7EB;
+}
+
+.global-toggle-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.global-toggle-btn:hover {
+  background: #F3F4F6;
+  border-color: #D1D5DB;
+}
+
+.global-toggle-btn.paused {
+  background: #FEF2F2;
+  border-color: #FECACA;
+  color: #DC2626;
+}
+
+.global-toggle-btn.paused:hover {
+  background: #FEE2E2;
+}
+
+.global-icon {
+  font-size: 16px;
+}
+
+/* ── Footer Navigation ─────────────────────────────────────────────── */
+.footer-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 8px;
+  border-top: 1px solid #E5E7EB;
+  background: #F9FAFB;
+}
+
+.nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.nav-btn:hover {
+  background: #E5E7EB;
+}
+
+.nav-icon {
+  font-size: 18px;
+}
+
+.nav-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #6B7280;
+}
+
+.nav-btn.premium .nav-label {
+  color: #D97706;
+  font-weight: 600;
+}
+
+/* ── Dark Mode ─────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #111827;
+    color: #F3F4F6;
+  }
+
+  .stats-row {
+    background: #1F2937;
+    border-color: #374151;
+  }
+
+  .control-row:hover {
+    background: #1F2937;
+  }
+
+  .control-label {
+    color: #E5E7EB;
+  }
+
+  .control-domain {
+    color: #6B7280;
+  }
+
+  .global-toggle-section {
+    border-color: #374151;
+  }
+
+  .global-toggle-btn {
+    background: #1F2937;
+    border-color: #374151;
+    color: #E5E7EB;
+  }
+
+  .global-toggle-btn:hover {
+    background: #374151;
+  }
+
+  .global-toggle-btn.paused {
+    background: #450A0A;
+    border-color: #7F1D1D;
+    color: #FCA5A5;
+  }
+
+  .footer-nav {
+    background: #1F2937;
+    border-color: #374151;
+  }
+
+  .nav-btn:hover {
+    background: #374151;
+  }
+
+  .nav-label {
+    color: #9CA3AF;
+  }
+
+  .stat-divider {
+    background: #4B5563;
+  }
+}

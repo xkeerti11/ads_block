@@ -1,0 +1,101 @@
+/* AdShield Pro - Element Hiding CSS */
+/* Injected on all pages via content_scripts */
+
+/* ── Google Ads ────────────────────────────────────────────────────── */
+ins.adsbygoogle,
+[id^="google_ads"],
+[id^="div-gpt-ad"],
+iframe[src*="doubleclick.net"],
+iframe[src*="googlesyndication.com"],
+iframe[src*="googleadservices.com"] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ── Generic Ad Containers ─────────────────────────────────────────── */
+[class*="ad-banner"],
+[class*="ad-container"],
+[class*="ad-wrapper"],
+[class*="ad-slot"],
+[class*="ad-unit"],
+[class*="advert-"],
+[class*="advertisement"],
+[id*="ad-banner"],
+[id*="ad-container"],
+[id*="ad-wrapper"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* ── Sponsored Content ─────────────────────────────────────────────── */
+[data-ad],
+[data-ad-slot],
+[data-adunit],
+[data-dfp] {
+  display: none !important;
+}
+
+/* ── Ad Networks ───────────────────────────────────────────────────── */
+[class*="taboola"],
+[id*="taboola"],
+[class*="outbrain"],
+[id*="outbrain"],
+div[id^="rcjsload"],
+[class*="mgid"],
+[id*="mgid"],
+[class*="media-net"],
+[class*="criteo"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* ── Cookie Notices / GDPR Banners ─────────────────────────────────── */
+[class*="cookie-banner"],
+[class*="cookie-notice"],
+[class*="cookie-consent"],
+[id*="cookie-banner"],
+[id*="cookie-notice"],
+[id*="cookie-consent"],
+[class*="gdpr"],
+[id*="gdpr"],
+[class*="consent-banner"],
+#onetrust-banner-sdk,
+#onetrust-consent-sdk,
+.cc-banner,
+.cc-window,
+#CybotCookiebotDialog,
+.CybotCookiebotDialogBodyLevelButtonIABHeader,
+[class*="CookieConsent"],
+#cookiescript_injected,
+.js-cookie-consent,
+[aria-label="cookieconsent"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* ── Pop-up Overlays ───────────────────────────────────────────────── */
+[class*="popup-overlay"],
+[class*="modal-overlay"][class*="ad"],
+[class*="interstitial-ad"],
+[class*="adhesion"],
+.pum-overlay {
+  display: none !important;
+}
+
+/* ── Social Widgets ────────────────────────────────────────────────── */
+iframe[src*="facebook.com/plugins"],
+iframe[src*="platform.twitter.com"],
+[class*="social-share-ad"] {
+  display: none !important;
+}
+
+/* ── Fix body scroll when cookie/popup is hidden ───────────────────── */
+body.modal-open[style*="overflow: hidden"],
+body[style*="overflow: hidden"]:has(#onetrust-banner-sdk),
+html[style*="overflow: hidden"]:has(.cc-banner) {
+  overflow: auto !important;
+}

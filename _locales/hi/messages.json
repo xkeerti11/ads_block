@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "AdShield Pro",
+    "description": "Extension name shown in browser"
+  },
+  "extDescription": {
+    "message": "विज्ञापन, ट्रैकर और मैलवेयर ब्लॉक करें। तेज़ और सुरक्षित ब्राउज़िंग। भारत-विशिष्ट फ़िल्टर के साथ प्राइवेसी-फर्स्ट एड ब्लॉकर।",
+    "description": "Extension description shown in Chrome Web Store"
+  }
+}

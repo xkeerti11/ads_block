@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=340">
+  <title>AdShield Pro</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <img src="../../icons/icon48.png" alt="AdShield" class="logo" width="28" height="28">
+      <span class="app-name">AdShield Pro</span>
+    </div>
+    <div class="header-right">
+      <span class="status-dot" id="statusDot"></span>
+      <span class="status-text" id="statusText">Active</span>
+    </div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-item">
+      <span class="stat-number" id="adsBlocked">0</span>
+      <span class="stat-label">Ads Blocked</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-number" id="trackersBlocked">0</span>
+      <span class="stat-label">Trackers</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-number" id="timeSaved">0s</span>
+      <span class="stat-label">Time Saved</span>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <!-- Site Toggle -->
+    <div class="control-row">
+      <div class="control-left">
+        <span class="control-icon">🌐</span>
+        <div class="control-info">
+          <span class="control-label" id="siteLabel">Enabled on this site</span>
+          <span class="control-domain" id="siteDomain">—</span>
+        </div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="siteToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <!-- Tracker Blocking -->
+    <div class="control-row">
+      <div class="control-left">
+        <span class="control-icon">🕵️</span>
+        <span class="control-label">Tracker blocking</span>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="trackerToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <!-- Cookie Notice Block -->
+    <div class="control-row">
+      <div class="control-left">
+        <span class="control-icon">🍪</span>
+        <span class="control-label">Cookie notice block</span>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="cookieToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <!-- Malware Protection -->
+    <div class="control-row">
+      <div class="control-left">
+        <span class="control-icon">🛡️</span>
+        <span class="control-label">Malware protection</span>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="malwareToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Global Toggle -->
+  <div class="global-toggle-section">
+    <button class="global-toggle-btn" id="globalToggleBtn">
+      <span class="global-icon" id="globalIcon">⏸</span>
+      <span id="globalText">Pause AdShield</span>
+    </button>
+  </div>
+
+  <!-- Footer Navigation -->
+  <div class="footer-nav">
+    <button class="nav-btn" id="settingsBtn" title="Settings">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label">Settings</span>
+    </button>
+    <button class="nav-btn" id="statsBtn" title="Statistics">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Stats</span>
+    </button>
+    <button class="nav-btn premium" id="proBtn" title="Go Pro">
+      <span class="nav-icon">⭐</span>
+      <span class="nav-label">Pro</span>
+    </button>
+  </div>
+
+  <script src="../utils/constants.js"></script>
+  <script src="../utils/storage.js"></script>
+  <script src="../utils/messaging.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
